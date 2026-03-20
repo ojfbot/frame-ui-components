@@ -1,5 +1,6 @@
 node_modules/
 dist/
 storybook-static/
+__visual_snapshots__/**/__diff_output__
 *.tsbuildinfo
 .vercel

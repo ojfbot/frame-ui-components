@@ -15,7 +15,21 @@ function ThrowingChild(): React.ReactNode {
 
 export const WithError: Story = {
   render: () => (
-    <ErrorBoundary>
+    <ErrorBoundary appName="storybook" boundaryName="demo-panel">
+      <ThrowingChild />
+    </ErrorBoundary>
+  ),
+}
+
+export const WithAppContext: Story = {
+  render: () => (
+    <ErrorBoundary
+      appName="cv-builder"
+      boundaryName="chat-panel"
+      onError={(_error, _errorInfo, report) => {
+        console.log('[Storybook] Error report:', report)
+      }}
+    >
       <ThrowingChild />
     </ErrorBoundary>
   ),
@@ -31,11 +45,17 @@ export const WithCustomFallback: Story = {
 
 export const WithFallbackFunction: Story = {
   render: () => (
-    <ErrorBoundary fallback={(error) => (
-      <div style={{ padding: '2rem', color: '#da1e28' }}>
-        <strong>Error:</strong> {error.message}
-      </div>
-    )}>
+    <ErrorBoundary
+      appName="blogengine"
+      boundaryName="thread-list"
+      fallback={(error, report) => (
+        <div style={{ padding: '2rem', color: '#da1e28' }}>
+          <strong>Error in {report.boundaryName}:</strong> {error.message}
+          <br />
+          <small>Component: {report.componentName} | App: {report.appName}</small>
+        </div>
+      )}
+    >
       <ThrowingChild />
     </ErrorBoundary>
   ),
@@ -43,7 +63,7 @@ export const WithFallbackFunction: Story = {
 
 export const Healthy: Story = {
   render: () => (
-    <ErrorBoundary>
+    <ErrorBoundary appName="storybook" boundaryName="healthy-demo">
       <div style={{ padding: '1rem' }}>Everything is fine.</div>
     </ErrorBoundary>
   ),

@@ -1,0 +1,262 @@
+/**
+ * ChatShell — positioning, expand/collapse, input layout.
+ *
+ * Rams: restrained animation (only translateY + opacity),
+ * consistent spacing via tokens, no decorative shadows.
+ */
+
+/* ── FAB (minimized state) ────────────────────────────────────────────── */
+
+.chat-shell-fab {
+  position: fixed;
+  bottom: var(--ojf-spacing-md, 1rem);
+  right: calc(4.5rem - var(--ojf-spacing-md, 1rem));
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ojf-accent, #5b4de0);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background var(--ojf-duration-fast, 120ms);
+  z-index: 1000;
+}
+
+.chat-shell-fab:hover {
+  background: var(--ojf-accent-hover, #4a3ecb);
+}
+
+.chat-shell-fab--sidebar {
+  right: calc(320px + 3rem);
+}
+
+.chat-shell-fab__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  background: var(--cds-support-error);
+  color: #fff;
+  border-radius: 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Shell container ──────────────────────────────────────────────────── */
+
+.chat-shell {
+  position: fixed;
+  bottom: var(--ojf-spacing-md, 1rem);
+  right: calc(4.5rem - var(--ojf-spacing-md, 1rem));
+  width: 400px;
+  max-width: calc(100vw - 2rem);
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: chatShellSlideUp var(--ojf-duration-base, 200ms) ease-out;
+  transition: right var(--ojf-duration-base, 200ms) ease;
+}
+
+.chat-shell--sidebar {
+  right: calc(320px + 3rem);
+}
+
+.chat-shell--expanded {
+  height: 650px;
+  max-height: calc(100vh - 2rem);
+}
+
+@keyframes chatShellSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+
+.chat-shell__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem var(--ojf-spacing-md, 1rem);
+  border-bottom: 1px solid var(--cds-border-subtle);
+  background-color: var(--cds-layer-02);
+  border-radius: 8px 8px 0 0;
+  flex-shrink: 0;
+}
+
+.chat-shell__header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--ojf-spacing-sm, 0.5rem);
+}
+
+.chat-shell__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cds-text-primary);
+}
+
+.chat-shell__spinner {
+  display: flex;
+  align-items: center;
+}
+
+.chat-shell__spinner .cds--inline-loading {
+  min-height: auto;
+}
+
+.chat-shell__spinner .cds--inline-loading__text {
+  display: none;
+}
+
+.chat-shell__unread {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  background-color: var(--cds-support-error);
+  color: #fff;
+  border-radius: 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.chat-shell__header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ojf-spacing-xs, 0.25rem);
+}
+
+/* ── Messages ─────────────────────────────────────────────────────────── */
+
+.chat-shell__messages {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--ojf-spacing-md, 1rem);
+  min-height: 200px;
+}
+
+/* ── Message tiles ────────────────────────────────────────────────────── */
+
+.chat-message {
+  padding: 0.75rem;
+  margin-bottom: var(--ojf-spacing-md, 1rem);
+  border-radius: 8px;
+  animation: chatMsgSlideIn var(--ojf-duration-base, 200ms) ease-out;
+}
+
+@keyframes chatMsgSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.chat-message--user {
+  background-color: var(--cds-layer-02);
+}
+
+.chat-message--assistant {
+  background-color: var(--cds-layer-accent-01);
+}
+
+.chat-message--streaming {
+  border-left: 3px solid var(--ojf-accent, #5b4de0);
+}
+
+.chat-message__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ojf-spacing-sm, 0.5rem);
+  font-size: 0.875rem;
+}
+
+.chat-message__role {
+  font-weight: 600;
+  color: var(--cds-text-primary);
+}
+
+.chat-message__streaming {
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+  font-style: italic;
+}
+
+.chat-message__content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--cds-text-primary);
+  word-wrap: break-word;
+}
+
+/* ── Input area ───────────────────────────────────────────────────────── */
+
+.chat-shell__input {
+  padding: var(--ojf-spacing-md, 1rem);
+  background-color: var(--cds-layer-01);
+  flex-shrink: 0;
+  border-top: 1px solid var(--cds-border-subtle);
+}
+
+.chat-shell__input-row {
+  position: relative;
+}
+
+.chat-shell__textarea {
+  flex: 1;
+}
+
+.chat-shell__textarea .cds--text-area__label-wrapper {
+  display: none;
+}
+
+.chat-shell__textarea textarea {
+  background-color: var(--cds-field-01) !important;
+  font-family: var(--ojf-font-mono, 'IBM Plex Mono', monospace) !important;
+  font-size: 0.875rem !important;
+  color: var(--cds-text-primary) !important;
+}
+
+.chat-shell__textarea textarea::placeholder {
+  font-family: var(--ojf-font-mono, 'IBM Plex Mono', monospace) !important;
+  color: var(--cds-text-placeholder) !important;
+}
+
+.chat-shell__input-actions {
+  position: absolute;
+  bottom: var(--ojf-spacing-sm, 0.5rem);
+  right: var(--ojf-spacing-sm, 0.5rem);
+  display: flex;
+  align-items: center;
+  gap: var(--ojf-spacing-xs, 0.25rem);
+  z-index: 10;
+}
+
+.chat-shell__send {
+  min-height: 2rem !important;
+  min-width: 2rem !important;
+}
+
+.chat-shell__disabled-msg {
+  font-size: 0.8125rem;
+  color: var(--cds-text-secondary);
+  text-align: center;
+  padding: var(--ojf-spacing-sm, 0.5rem) 0;
+  margin: 0;
+}

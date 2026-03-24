@@ -5,11 +5,17 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./styles/tokens": "./src/styles/tokens.css",
     "./styles/dashboard": "./src/styles/Dashboard.css",
+    "./styles/dashboard-layout": "./src/styles/DashboardLayout.css",
     "./styles/badge-button": "./src/styles/BadgeButton.css",
-    "./styles/markdown-message": "./src/styles/MarkdownMessage.css"
+    "./styles/markdown-message": "./src/styles/MarkdownMessage.css",
+    "./styles/thread-sidebar": "./src/styles/ThreadSidebar.css",
+    "./styles/chat-shell": "./src/styles/ChatShell.css"
   },
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
     "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
     "type-check": "tsc --noEmit"
@@ -24,18 +30,22 @@
   "devDependencies": {
     "@carbon/react": "^1.71.0",
     "@carbon/styles": "^1.102.0",
-    "storybook": "~8.4.0",
+    "@storybook/addon-essentials": "~8.4.0",
     "@storybook/react": "~8.4.0",
     "@storybook/react-vite": "~8.4.0",
-    "@storybook/addon-essentials": "~8.4.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "jsdom": "^29.0.1",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-markdown": "^9.0.0",
     "remark-gfm": "^4.0.0",
+    "storybook": "~8.4.0",
     "typescript": "^5.7.0",
     "vite": "^5.4.0",
-    "@vitejs/plugin-react": "^4.3.0"
+    "vitest": "^3.1.0"
   }
 }

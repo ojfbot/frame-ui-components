@@ -1,0 +1,179 @@
+/* ── Thread sidebar ────────────────────────────────────────────────────── */
+
+.thread-sidebar {
+  position: fixed;
+  right: var(--ojf-spacing-md, 1rem);
+  top: calc(48px + var(--ojf-spacing-sm, 0.5rem));
+  height: calc(100vh - 48px - var(--ojf-spacing-md, 1rem));
+  width: 320px;
+  background-color: var(--cds-layer-01);
+  border-left: 1px solid var(--cds-border-subtle);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(calc(100% + var(--ojf-spacing-md, 1rem)));
+  visibility: hidden;
+  transition:
+    transform var(--ojf-duration-base, 200ms) ease,
+    visibility 0s var(--ojf-duration-base, 200ms);
+  z-index: 9998;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.thread-sidebar.expanded {
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform var(--ojf-duration-base, 200ms) ease,
+    visibility 0s;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+
+.thread-sidebar-header {
+  padding: var(--ojf-spacing-md, 1rem);
+  border-bottom: 1px solid var(--cds-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--cds-layer-02);
+}
+
+.thread-sidebar-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--cds-text-primary);
+}
+
+.thread-sidebar-actions {
+  display: flex;
+  gap: var(--ojf-spacing-sm, 0.5rem);
+}
+
+/* ── Content ──────────────────────────────────────────────────────────── */
+
+.thread-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--ojf-spacing-sm, 0.5rem);
+}
+
+.thread-sidebar-loading {
+  padding: var(--ojf-spacing-md, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ojf-spacing-md, 1rem);
+}
+
+/* ── Empty state ──────────────────────────────────────────────────────── */
+
+.thread-sidebar-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ojf-spacing-xl, 2rem) var(--ojf-spacing-md, 1rem);
+  text-align: center;
+  height: 100%;
+  color: var(--cds-text-secondary);
+}
+
+.thread-sidebar-empty .empty-icon {
+  color: var(--cds-icon-secondary);
+  opacity: 0.5;
+  margin-bottom: var(--ojf-spacing-md, 1rem);
+}
+
+.thread-sidebar-empty .empty-message {
+  margin: 0 0 var(--ojf-spacing-md, 1rem) 0;
+  font-size: 0.875rem;
+}
+
+/* ── Thread list ──────────────────────────────────────────────────────── */
+
+.thread-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ojf-spacing-xs, 0.25rem);
+}
+
+.thread-item {
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color var(--ojf-duration-fast, 120ms);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ojf-spacing-sm, 0.5rem);
+  border: 1px solid transparent;
+}
+
+.thread-item:hover {
+  background-color: var(--cds-layer-hover-01);
+  border-color: var(--cds-border-subtle);
+}
+
+.thread-item.active {
+  background-color: var(--cds-layer-selected-01);
+  border-color: var(--cds-border-interactive);
+}
+
+.thread-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.thread-item-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--cds-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: var(--ojf-spacing-xs, 0.25rem);
+}
+
+.thread-item.active .thread-item-title {
+  font-weight: 600;
+}
+
+.thread-item-date {
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+}
+
+.thread-item-delete {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.thread-item-delete:hover {
+  opacity: 1;
+  color: var(--cds-support-error);
+}
+
+/* ── Overlay (mobile/tablet) ──────────────────────────────────────────── */
+
+.thread-sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .thread-sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 48px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9997;
+  }
+}
+
+@media (max-width: 768px) {
+  .thread-sidebar {
+    width: 280px;
+  }
+}

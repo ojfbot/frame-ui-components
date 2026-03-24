@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BadgeButton } from './BadgeButton'
-import type { BadgeAction } from './BadgeButton'
+import { createSimpleBadge, createBadgeAction, createChatAction, createNavigateAction } from '../types/actions'
+import type { BadgeAction } from '../types/actions'
 
 const meta: Meta<typeof BadgeButton> = {
   title: 'Components/BadgeButton',
@@ -14,34 +15,39 @@ const meta: Meta<typeof BadgeButton> = {
 export default meta
 type Story = StoryObj<typeof BadgeButton>
 
-const baseBadge: BadgeAction = {
-  label: 'Write Blog Post',
-  message: 'Write a new blog post about React patterns',
-  variant: 'purple',
-}
+const baseBadge: BadgeAction = createSimpleBadge(
+  'Write Blog Post',
+  'Write a new blog post about React patterns',
+  { variant: 'purple' },
+)
 
 export const Default: Story = {
-  args: {
-    badgeAction: baseBadge,
-  },
+  args: { badgeAction: baseBadge },
 }
 
 export const WithIcon: Story = {
   args: {
-    badgeAction: { ...baseBadge, icon: '\u{1F4DD}', label: 'Draft Resume' },
+    badgeAction: createSimpleBadge('Draft Resume', 'Draft a new resume', { icon: '\u{1F4DD}' }),
   },
 }
 
 export const Small: Story = {
-  args: {
-    badgeAction: baseBadge,
-    size: 'sm',
-  },
+  args: { badgeAction: baseBadge, size: 'sm' },
 }
 
 export const Disabled: Story = {
   args: {
-    badgeAction: { ...baseBadge, disabled: true },
+    badgeAction: createSimpleBadge('Disabled', 'This is disabled', { disabled: true }),
+  },
+}
+
+export const RichAction: Story = {
+  args: {
+    badgeAction: createBadgeAction(
+      'Analyze Job',
+      [createNavigateAction('jobs'), createChatAction('Analyze this job listing')],
+      { icon: '🔍', variant: 'cyan' },
+    ),
   },
 }
 
@@ -53,7 +59,7 @@ export const AllVariants: Story = {
         {variants.map((variant) => (
           <BadgeButton
             key={variant}
-            badgeAction={{ ...baseBadge, variant, label: variant }}
+            badgeAction={createSimpleBadge(variant, `Action for ${variant}`, { variant })}
             onExecute={args.onExecute}
           />
         ))}

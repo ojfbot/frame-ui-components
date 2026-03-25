@@ -208,7 +208,7 @@
 /* ── Input area ───────────────────────────────────────────────────────── */
 
 .chat-shell__input {
-  padding: var(--ojf-spacing-md, 1rem);
+  padding: 1.25rem 1rem 1rem 1rem;
   background-color: var(--cds-layer-01);
   flex-shrink: 0;
   border-top: 1px solid var(--cds-border-subtle);
@@ -216,6 +216,9 @@
 
 .chat-shell__input-row {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ojf-spacing-sm, 0.5rem);
 }
 
 .chat-shell__textarea {
@@ -240,8 +243,8 @@
 
 .chat-shell__input-actions {
   position: absolute;
-  bottom: var(--ojf-spacing-sm, 0.5rem);
-  right: var(--ojf-spacing-sm, 0.5rem);
+  bottom: 1.5rem;
+  right: 1.5rem;
   display: flex;
   align-items: center;
   gap: var(--ojf-spacing-xs, 0.25rem);

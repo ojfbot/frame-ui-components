@@ -45,6 +45,9 @@ function defaultFormatDate(dateString: string): string {
 /**
  * Pure presentational thread sidebar — no Redux, no store.
  * Each app wires this via a thin Connected wrapper.
+ *
+ * Includes its own toggle button so all apps get a consistent
+ * icon (Chat / Close) and placement.
  */
 export function ThreadSidebar({
   isExpanded,

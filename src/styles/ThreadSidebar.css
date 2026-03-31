@@ -4,7 +4,7 @@
   position: fixed;
   right: var(--ojf-spacing-md, 1rem);
   top: calc(48px + var(--ojf-spacing-sm, 0.5rem));
-  height: calc(100vh - 48px - var(--ojf-spacing-md, 1rem));
+  bottom: var(--ojf-spacing-sm, 0.5rem);
   width: 320px;
   background-color: var(--cds-layer-01);
   border-left: 1px solid var(--cds-border-subtle);

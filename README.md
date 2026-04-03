@@ -2,7 +2,7 @@
 
 > Shared UI component library for Frame OS sub-apps — dashboard chrome, chat, threads, and error handling.
 
-Shared UI component library for Frame OS sub-apps. Single source of truth for dashboard chrome, chat, thread management, and error handling across 9 applications.
+Shared UI component library for Frame OS sub-apps. Single source of truth for dashboard chrome, chat, thread management, and error handling across 9 applications. 7 components exported as both ESM modules and standalone CSS files. Pure, prop-driven, no internal state management — each consuming app wires Redux via thin Connected wrappers.
 
 ## Install
 

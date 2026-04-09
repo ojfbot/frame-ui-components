@@ -1,5 +1,11 @@
 # @ojfbot/frame-ui-components
 
+## 1.0.1
+
+### Patch Changes
+
+- [#21](https://github.com/ojfbot/frame-ui-components/pull/21) [`7627006`](https://github.com/ojfbot/frame-ui-components/commit/7627006dfdf708562e85e142bc0b6472501bd737) Thanks [@ojfbot](https://github.com/ojfbot)! - Copy CSS files to dist/styles/ during build so consumers resolving from dist/ can find the CSS imports.
+
 ## 1.0.0
 
 ### Major Changes

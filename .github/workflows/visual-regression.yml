@@ -1,0 +1,43 @@
+name: Visual Regression
+
+on: [pull_request]
+
+jobs:
+  visual-regression:
+    name: Screenshot comparison
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build Storybook
+        run: pnpm build-storybook
+
+      - name: Run visual regression tests
+        run: pnpm exec playwright test
+        continue-on-error: true
+        id: visual-test
+
+      - name: Report visual regression status
+        if: steps.visual-test.outcome == 'failure'
+        run: echo "::warning::Visual regression differences detected. Review diff artifacts."
+
+      - name: Upload diff artifacts
+        if: steps.visual-test.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diffs
+          path: test-results/
+          retention-days: 7

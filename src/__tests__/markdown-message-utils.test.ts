@@ -5,7 +5,6 @@ import type { BadgeAction } from '../types/actions'
 const makeBadge = (label: string): BadgeAction => ({
   label,
   actions: [],
-  style: {},
 })
 
 describe('defaultMatchAction', () => {

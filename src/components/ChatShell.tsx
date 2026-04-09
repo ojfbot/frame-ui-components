@@ -1,12 +1,10 @@
-import { useRef, useEffect, useCallback } from 'react'
-import type { ReactNode, KeyboardEvent } from 'react'
-import { Button, TextInput, TextArea, InlineLoading } from '@carbon/react'
-import {
-  Chat,
-  Subtract,
-  Minimize,
-  SendFilled,
-} from '@carbon/icons-react'
+import { useRef, useEffect } from 'react'
+import type { ReactNode } from 'react'
+import { Chat } from '@carbon/icons-react'
+import { ChatHeader } from './ChatHeader'
+import { ChatMessageArea } from './ChatMessageArea'
+import type { ChatMessageAreaHandle } from './ChatMessageArea'
+import { ChatInput } from './ChatInput'
 import '../styles/ChatShell.css'
 
 export type ChatDisplayState = 'collapsed' | 'expanded' | 'minimized'
@@ -51,6 +49,8 @@ export interface ChatShellProps {
  * auto-scroll, TextInput/TextArea switching, and input area.
  *
  * Pure component — no Redux, no store.
+ *
+ * Delegates to ChatHeader, ChatMessageArea, and ChatInput sub-components.
  */
 export function ChatShell({
   displayState,
@@ -72,64 +72,15 @@ export function ChatShell({
   children,
   streamingContent,
 }: ChatShellProps) {
-  const messagesRef = useRef<HTMLDivElement>(null)
-  const textAreaRef = useRef<HTMLTextAreaElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const messageAreaRef = useRef<ChatMessageAreaHandle>(null)
   const isExpanded = displayState === 'expanded'
-  const isCollapsed = displayState === 'collapsed'
 
-  // Reliable auto-scroll using double RAF
-  const scrollToBottom = useCallback((smooth = false) => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (messagesRef.current) {
-          const container = messagesRef.current
-          if (smooth) {
-            container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' })
-          } else {
-            container.scrollTop = container.scrollHeight
-          }
-        }
-      })
-    })
-  }, [])
-
-  // Auto-focus input and scroll when expanding
+  // Smooth scroll when expanding
   useEffect(() => {
     if (isExpanded) {
-      setTimeout(() => textAreaRef.current?.focus(), 100)
-      scrollToBottom(true)
+      messageAreaRef.current?.scrollToBottom(true)
     }
-  }, [isExpanded, scrollToBottom])
-
-  // Auto-scroll when children change (new messages)
-  useEffect(() => {
-    if (isExpanded) scrollToBottom()
-  })
-
-  // Auto-scroll when streaming content changes
-  useEffect(() => {
-    if (isExpanded && streamingContent) scrollToBottom()
-  }, [streamingContent, isExpanded, scrollToBottom])
-
-  const handleSend = () => {
-    const trimmed = draftInput.trim()
-    if (!trimmed || inputDisabled || isLoading) return
-    onSend(trimmed)
-  }
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
-    }
-  }
-
-  const handleInputFocus = () => {
-    if (!isExpanded && onInputFocus) {
-      onInputFocus()
-    }
-  }
+  }, [isExpanded])
 
   // Minimized: FAB button
   if (displayState === 'minimized') {
@@ -147,8 +98,6 @@ export function ChatShell({
     )
   }
 
-  const displayTitle = chatSummary ? `${title} - ${chatSummary}` : title
-
   return (
     <div
       className={[
@@ -159,150 +108,38 @@ export function ChatShell({
       data-element="chat-window"
       data-state={displayState}
     >
-      {/* Header */}
-      <div
-        className="chat-shell__header"
-        onClick={isCollapsed ? () => onDisplayStateChange('expanded') : undefined}
-        style={{ cursor: isCollapsed ? 'pointer' : 'default' }}
+      <ChatHeader
+        displayState={displayState}
+        onDisplayStateChange={onDisplayStateChange}
+        title={title}
+        chatSummary={chatSummary}
+        isLoading={isLoading}
+        unreadCount={unreadCount}
+        headerExtra={headerExtra}
+      />
+
+      <ChatMessageArea
+        ref={messageAreaRef}
+        isExpanded={isExpanded}
+        isLoading={isLoading}
+        streamingContent={streamingContent}
       >
-        <div className="chat-shell__header-left">
-          <Chat size={20} />
-          <span className="chat-shell__title">{displayTitle}</span>
-          {isCollapsed && isLoading && (
-            <span className="chat-shell__spinner">
-              <InlineLoading status="active" />
-            </span>
-          )}
-          {isCollapsed && !isLoading && unreadCount > 0 && (
-            <span className="chat-shell__unread">new</span>
-          )}
-          {headerExtra}
-        </div>
-        <div className="chat-shell__header-actions">
-          {isExpanded && (
-            <Button
-              kind="ghost"
-              size="sm"
-              hasIconOnly
-              iconDescription="Minimize"
-              renderIcon={Subtract}
-              onClick={(e: React.MouseEvent) => {
-                e.stopPropagation()
-                onDisplayStateChange('minimized')
-              }}
-            />
-          )}
-          {isExpanded && (
-            <Button
-              kind="ghost"
-              size="sm"
-              hasIconOnly
-              iconDescription="Collapse"
-              renderIcon={Minimize}
-              onClick={(e: React.MouseEvent) => {
-                e.stopPropagation()
-                onDisplayStateChange('collapsed')
-              }}
-            />
-          )}
-        </div>
-      </div>
+        {children}
+      </ChatMessageArea>
 
-      {/* Messages — only visible when expanded */}
-      {isExpanded && (
-        <>
-          <div
-            className="chat-shell__messages"
-            ref={messagesRef}
-            data-element="chat-messages"
-          >
-            {children}
-            {streamingContent}
-            {isLoading && !streamingContent && (
-              <div className="chat-shell__thinking">
-                <InlineLoading description="Thinking..." />
-              </div>
-            )}
-          </div>
-
-          {/* Input */}
-          <div className="chat-shell__input" data-element="condensed-chat-input-wrapper">
-            {inputDisabled && disabledMessage ? (
-              <p className="chat-shell__disabled-msg">{disabledMessage}</p>
-            ) : (
-              <div className="chat-shell__input-row">
-                <div className="chat-shell__textarea">
-                  <TextArea
-                    ref={textAreaRef}
-                    id="chat-shell-input"
-                    labelText="Message"
-                    hideLabel
-                    placeholder={placeholder}
-                    value={draftInput}
-                    onChange={(e: any) => onDraftChange(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    onFocus={handleInputFocus}
-                    rows={3}
-                    disabled={inputDisabled}
-                    data-element="chat-input"
-                  />
-                </div>
-                <div className="chat-shell__input-actions">
-                  {inputExtra}
-                  <Button
-                    kind="primary"
-                    size="sm"
-                    hasIconOnly
-                    iconDescription="Send"
-                    renderIcon={SendFilled}
-                    onClick={handleSend}
-                    disabled={!draftInput.trim() || inputDisabled || isLoading}
-                    className="chat-shell__send"
-                    data-element="chat-send-button"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </>
-      )}
-
-      {/* Collapsed: single-line input */}
-      {isCollapsed && (
-        <div className="chat-shell__input" data-element="condensed-chat-input-wrapper">
-          <div className="chat-shell__input-row">
-            <TextInput
-              ref={inputRef}
-              id="chat-shell-collapsed-input"
-              labelText=""
-              hideLabel
-              placeholder={placeholder}
-              value={draftInput}
-              onChange={(e: any) => onDraftChange(e.target.value)}
-              onKeyDown={(e: any) => {
-                if (e.key === 'Enter' && !isLoading) {
-                  e.preventDefault()
-                  handleSend()
-                }
-              }}
-              onFocus={handleInputFocus}
-              disabled={inputDisabled}
-              size="md"
-              data-element="chat-input"
-            />
-            <Button
-              kind="primary"
-              size="sm"
-              hasIconOnly
-              iconDescription="Send"
-              renderIcon={SendFilled}
-              onClick={handleSend}
-              disabled={!draftInput.trim() || inputDisabled || isLoading}
-              className="chat-shell__send"
-              data-element="chat-send-button"
-            />
-          </div>
-        </div>
+      {(isExpanded || displayState === 'collapsed') && (
+        <ChatInput
+          mode={isExpanded ? 'expanded' : 'collapsed'}
+          draftInput={draftInput}
+          onDraftChange={onDraftChange}
+          onSend={onSend}
+          onInputFocus={onInputFocus}
+          placeholder={placeholder}
+          inputDisabled={inputDisabled}
+          disabledMessage={disabledMessage}
+          isLoading={isLoading}
+          inputExtra={inputExtra}
+        />
       )}
     </div>
   )

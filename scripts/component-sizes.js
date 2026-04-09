@@ -17,7 +17,7 @@ const STYLE_DIR = join(__dirname, '..', 'src', 'styles')
 const BUDGET_LINES = 200
 const BUDGET_BYTES = 10_000
 // Components with planned decomposition — warn but don't fail
-const DECOMPOSITION_PLANNED = new Set(['MarkdownMessage'])
+const DECOMPOSITION_PLANNED = new Set([])
 
 function getFiles(dir, ext) {
   try {

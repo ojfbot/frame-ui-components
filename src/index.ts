@@ -1,3 +1,7 @@
+// ── Tokens ───────────────────────────────────────────────────────────────
+export { tokens } from './tokens.js'
+export type { TokenKey } from './tokens.js'
+
 // ── Components ───────────────────────────────────────────────────────────
 export { BadgeButton } from './components/BadgeButton.js'
 export type { BadgeButtonProps } from './components/BadgeButton.js'

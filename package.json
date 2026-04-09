@@ -33,9 +33,7 @@
   },
   "files": [
     "dist",
-    "src/index.ts",
-    "src/styles",
-    "src/tokens.ts"
+    "src"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

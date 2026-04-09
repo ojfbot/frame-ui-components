@@ -25,9 +25,15 @@
     "./styles/thread-sidebar": "./src/styles/ThreadSidebar.css",
     "./styles/chat-shell": "./src/styles/ChatShell.css"
   },
+  "typesVersions": {
+    "*": {
+      "tokens": ["src/tokens.ts"]
+    }
+  },
   "files": [
     "dist",
-    "src/styles"
+    "src/styles",
+    "src/tokens.ts"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

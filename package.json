@@ -4,8 +4,14 @@
   "private": false,
   "packageManager": "pnpm@9.15.4",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "source": "./src/index.ts"
+    },
     "./styles/tokens": "./src/styles/tokens.css",
     "./styles/dashboard": "./src/styles/Dashboard.css",
     "./styles/dashboard-layout": "./src/styles/DashboardLayout.css",
@@ -14,12 +20,21 @@
     "./styles/thread-sidebar": "./src/styles/ThreadSidebar.css",
     "./styles/chat-shell": "./src/styles/ChatShell.css"
   },
+  "files": [
+    "dist",
+    "src/styles"
+  ],
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "pnpm build",
     "test": "vitest run",
     "test:watch": "vitest",
     "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "peerDependencies": {
     "@carbon/react": ">=1",
@@ -32,6 +47,8 @@
   "devDependencies": {
     "@carbon/react": "^1.71.0",
     "@carbon/styles": "^1.102.0",
+    "@changesets/changelog-github": "^0.6.0",
+    "@changesets/cli": "^2.30.0",
     "@storybook/addon-essentials": "~8.4.0",
     "@storybook/react": "~8.4.0",
     "@storybook/react-vite": "~8.4.0",

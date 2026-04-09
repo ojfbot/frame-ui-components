@@ -12,6 +12,11 @@
       "import": "./dist/index.js",
       "source": "./src/index.ts"
     },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js",
+      "source": "./src/tokens.ts"
+    },
     "./styles/tokens": "./src/styles/tokens.css",
     "./styles/dashboard": "./src/styles/Dashboard.css",
     "./styles/dashboard-layout": "./src/styles/DashboardLayout.css",

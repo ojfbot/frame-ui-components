@@ -33,10 +33,19 @@
   --ojf-spacing-xl:  2rem;    /* 32px */
   --ojf-spacing-2xl: 3rem;    /* 48px */
 
+  /* Spacing (8px grid) */
+  --ojf-spacing-xs:  0.25rem; /* 4px */
+  --ojf-spacing-sm:  0.5rem;  /* 8px */
+  --ojf-spacing-md:  1rem;    /* 16px */
+  --ojf-spacing-lg:  1.5rem;  /* 24px */
+  --ojf-spacing-xl:  2rem;    /* 32px */
+  --ojf-spacing-2xl: 3rem;    /* 48px */
+
   /* Surface (light) */
   --ojf-bg:            #ffffff;
   --ojf-surface-1:     #f4f4f4;
   --ojf-surface-2:     #e0e0e0;
+  --ojf-surface-3:     #c6c6c6;
 
   /* Border (light) */
   --ojf-border:        #c6c6c6;
@@ -58,6 +67,7 @@
   --ojf-bg:            #0a0a0a;
   --ojf-surface-1:     #111111;
   --ojf-surface-2:     #181818;
+  --ojf-surface-3:     #222222;
 
   --ojf-border:        #2a2a2a;
   --ojf-border-subtle: #1e1e1e;

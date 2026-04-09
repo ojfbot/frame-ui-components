@@ -24,3 +24,6 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      - name: Component size budgets
+        run: pnpm size

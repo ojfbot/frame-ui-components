@@ -39,7 +39,9 @@
     "type-check": "tsc --noEmit",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm build && changeset publish",
+    "size": "node scripts/component-sizes.js",
+    "size-limit": "size-limit"
   },
   "peerDependencies": {
     "@carbon/react": ">=1",
@@ -49,11 +51,24 @@
     "react-markdown": ">=9",
     "remark-gfm": ">=4"
   },
+  "size-limit": [
+    {
+      "path": "src/components/*.tsx",
+      "limit": "10 KB",
+      "name": "Components (source)"
+    },
+    {
+      "path": "src/styles/*.css",
+      "limit": "25 KB",
+      "name": "Styles (source)"
+    }
+  ],
   "devDependencies": {
     "@carbon/react": "^1.71.0",
     "@carbon/styles": "^1.102.0",
     "@changesets/changelog-github": "^0.6.0",
     "@changesets/cli": "^2.30.0",
+    "@size-limit/file": "^12.0.1",
     "@storybook/addon-essentials": "~8.4.0",
     "@storybook/react": "~8.4.0",
     "@storybook/react-vite": "~8.4.0",
@@ -67,6 +82,7 @@
     "react-dom": "^18.3.0",
     "react-markdown": "^9.0.0",
     "remark-gfm": "^4.0.0",
+    "size-limit": "^12.0.1",
     "storybook": "~8.4.0",
     "typescript": "^5.7.0",
     "vite": "^5.4.0",

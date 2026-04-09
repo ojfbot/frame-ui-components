@@ -40,7 +40,7 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && cp -r src/styles dist/styles",
     "prepublishOnly": "pnpm build",
     "test": "vitest run",
     "test:watch": "vitest",

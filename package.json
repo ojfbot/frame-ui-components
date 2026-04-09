@@ -4,17 +4,17 @@
   "private": false,
   "packageManager": "pnpm@9.15.4",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
     ".": {
       "types": "./src/index.ts",
-      "import": "./dist/index.js",
+      "import": "./src/index.ts",
       "source": "./src/index.ts"
     },
     "./tokens": {
       "types": "./src/tokens.ts",
-      "import": "./dist/tokens.js",
+      "import": "./src/tokens.ts",
       "source": "./src/tokens.ts"
     },
     "./styles/tokens": "./src/styles/tokens.css",
